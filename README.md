@@ -4,5 +4,7 @@ We will just call them “districts” for short. The model is able to learn fro
 
 ### Project Structure
 The **housing.ipynb** notebook contains the analysis, data insights and notes for this machine learning project.
+
 The **python files** just contain the code.
+
 The **/dataset** directory contains the dataset for the project.

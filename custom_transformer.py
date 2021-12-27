@@ -11,7 +11,7 @@ rooms_ix, bedrooms_ix, population_ix, household_ix = 3, 4, 5, 6
 
 #   custom transformer for combining specific features to enable better learning
 class CombinedAttributesAdder(BaseEstimator, TransformerMixin):
-    def __init__(self, add_bedrooms_per_room=False):
+    def __init__(self, add_bedrooms_per_room=True):
         self.add_bedrooms_per_room = add_bedrooms_per_room
 
     def fit(self, X, y=None):
@@ -25,3 +25,22 @@ class CombinedAttributesAdder(BaseEstimator, TransformerMixin):
             return np.c_[X, rooms_per_household, population_per_household, bedrooms_per_room]
         else:
             return np.c_[X, rooms_per_household, population_per_household]
+
+
+"""
+selector transformer: it simply transforms the data by selecting the desired features (numerical and categorical) 
+dropping the rest, and converting the resulting DataFrame to a NumPy array.
+"""
+class DataFrameSelector(BaseEstimator, TransformerMixin):
+    """
+    Given a list of attribute names, it transforms the data by selecting all values of the attributes
+    and dropping the rest.
+    """
+    def __int__(self, attribute_names):
+        self.attribute_names = attribute_names
+
+    def fit(self, X, y=None):
+        return self
+
+    def tranform(self, X, y=None):
+        return X[self.attribute_names].values

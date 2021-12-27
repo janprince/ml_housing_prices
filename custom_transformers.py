@@ -15,7 +15,7 @@ class CombinedAttributesAdder(BaseEstimator, TransformerMixin):
         self.add_bedrooms_per_room = add_bedrooms_per_room
 
     def fit(self, X, y=None):
-        return None
+        return self
 
     def transform(self, X, y=None):
         rooms_per_household = X[:, rooms_ix] / X[:, household_ix]
@@ -36,11 +36,11 @@ class DataFrameSelector(BaseEstimator, TransformerMixin):
     Given a list of attribute names, it transforms the data by selecting all values of the attributes
     and dropping the rest.
     """
-    def __int__(self, attribute_names):
+    def __init__(self, attribute_names):
         self.attribute_names = attribute_names
 
     def fit(self, X, y=None):
         return self
 
-    def tranform(self, X, y=None):
+    def transform(self, X, y=None):
         return X[self.attribute_names].values

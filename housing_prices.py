@@ -1,8 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import StratifiedShuffleSplit
-from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+from tranformation_pipeline import pipeline
 
 #  analysis and visualization of data is done in the attached notebook. :)
 
@@ -24,27 +23,11 @@ for train_index, test_index in split.split(housing, housing["income_cat"]):
 for set in (strat_train_set, strat_test_set):
     set.drop(["income_cat"], axis=1, inplace=True)
 
-
 # separate predictors from labels
 housing = strat_train_set.drop("median_house_value", axis=1)    # predictors
 housing_labels = strat_train_set["median_house_value"].copy()
 
-# fill in missing values with median of corresponding features
-housing_num = housing.drop("ocean_proximity", axis=1)       # drops non-numerical feature
-
-imputer = SimpleImputer(strategy="median")
-imputer.fit(housing_num)
-X = imputer.transform(housing_num)             # fills null fields with estimated median value of corresponding feature
-
-housing_tr = pd.DataFrame(X, columns=housing_num.columns)
-
-# Integer encoding of categorical and/or text features (representing categories with integers)
-encoder = LabelEncoder()
-housing_cat = housing["ocean_proximity"]
-housing_cat_encoded = encoder.fit_transform(housing_cat)
-
-
-# One hot encoding
-encoder = OneHotEncoder()
-housing_cat_1hot = encoder.fit_transform(housing_cat_encoded.reshape(-1, 1))
-
+# Apply transformation pipeline to data
+full_pipeline = pipeline(housing)
+housing_prepared = full_pipeline.fit_transform(housing)
+print(housing_prepared.shape)

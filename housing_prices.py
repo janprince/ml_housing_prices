@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import StratifiedShuffleSplit
 from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 
 #  analysis and visualization of data is done in the attached notebook. :)
 
@@ -25,7 +25,6 @@ for set in (strat_train_set, strat_test_set):
     set.drop(["income_cat"], axis=1, inplace=True)
 
 
-
 # separate predictors from labels
 housing = strat_train_set.drop("median_house_value", axis=1)    # predictors
 housing_labels = strat_train_set["median_house_value"].copy()
@@ -34,11 +33,7 @@ housing_labels = strat_train_set["median_house_value"].copy()
 housing_num = housing.drop("ocean_proximity", axis=1)       # drops non-numerical feature
 
 imputer = SimpleImputer(strategy="median")
-
-# fit imputer to housing_num
 imputer.fit(housing_num)
-
-# transform housing_num
 X = imputer.transform(housing_num)             # fills null fields with estimated median value of corresponding feature
 
 housing_tr = pd.DataFrame(X, columns=housing_num.columns)
@@ -47,4 +42,9 @@ housing_tr = pd.DataFrame(X, columns=housing_num.columns)
 encoder = LabelEncoder()
 housing_cat = housing["ocean_proximity"]
 housing_cat_encoded = encoder.fit_transform(housing_cat)
-print(housing_cat_encoded)
+
+
+# One hot encoding
+encoder = OneHotEncoder()
+housing_cat_1hot = encoder.fit_transform(housing_cat_encoded.reshape(-1, 1))
+

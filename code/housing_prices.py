@@ -6,7 +6,7 @@ from tranformation_pipeline import pipeline
 #  analysis and visualization of data is done in the attached notebook. :)
 
 # load data
-housing = pd.read_csv("dataset/housing.csv")
+housing = pd.read_csv("../dataset/housing.csv")
 
 # creating a new feature
 housing["income_cat"] = np.ceil(housing["median_income"]/1.5)
@@ -31,3 +31,18 @@ housing_labels = strat_train_set["median_house_value"].copy()
 full_pipeline = pipeline(housing)
 housing_prepared = full_pipeline.fit_transform(housing)
 print(housing_prepared.shape)
+
+
+# # selecting and training a model
+# from sklearn.linear_model import LinearRegression
+#
+# lin_reg = LinearRegression()
+# lin_reg.fit(housing_prepared, housing_labels)
+#
+# some_data = housing.iloc[:5]
+# some_labels = housing_labels[:5]
+#
+# some_data_prepared = full_pipeline.transform(some_data)
+# print(f"Predictions:\t\t {lin_reg.predict(some_data_prepared)}")
+#
+# print(f"Original Labels:\t\t {list(some_labels)}")

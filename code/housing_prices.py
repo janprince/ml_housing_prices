@@ -33,16 +33,30 @@ housing_prepared = full_pipeline.fit_transform(housing)
 print(housing_prepared.shape)
 
 
-# # selecting and training a model
-# from sklearn.linear_model import LinearRegression
-#
-# lin_reg = LinearRegression()
-# lin_reg.fit(housing_prepared, housing_labels)
-#
+# selecting and training a model
+from sklearn.linear_model import LinearRegression
+
+lin_reg = LinearRegression()
+lin_reg.fit(housing_prepared, housing_labels)
+
 # some_data = housing.iloc[:5]
 # some_labels = housing_labels[:5]
-#
 # some_data_prepared = full_pipeline.transform(some_data)
 # print(f"Predictions:\t\t {lin_reg.predict(some_data_prepared)}")
-#
 # print(f"Original Labels:\t\t {list(some_labels)}")
+
+# computing how well the model performed.
+predictions = lin_reg.predict(housing_prepared)
+
+total = len(predictions)
+cost = 0
+for i in range(total):
+    try:
+        cost += abs(predictions[i] - housing_labels[i])
+    except KeyError:
+        continue
+
+
+# Print results
+print(f"Cost: {cost / total}")
+

@@ -35,9 +35,20 @@ print(housing_prepared.shape)
 
 # selecting and training a model
 from sklearn.linear_model import LinearRegression
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.metrics import mean_squared_error
 
+# model 0
 lin_reg = LinearRegression()
 lin_reg.fit(housing_prepared, housing_labels)
+
+# model 1
+tree_reg = DecisionTreeRegressor()
+tree_reg.fit(housing_prepared, housing_labels)
+
+# predictions by the two models
+# predictions = lin_reg.predict(housing_prepared)
+predictions = tree_reg.predict(housing_prepared)
 
 # some_data = housing.iloc[:5]
 # some_labels = housing_labels[:5]
@@ -46,17 +57,8 @@ lin_reg.fit(housing_prepared, housing_labels)
 # print(f"Original Labels:\t\t {list(some_labels)}")
 
 # computing how well the model performed.
-predictions = lin_reg.predict(housing_prepared)
 
-total = len(predictions)
-cost = 0
-for i in range(total):
-    try:
-        cost += abs(predictions[i] - housing_labels[i])
-    except KeyError:
-        continue
-
-
-# Print results
-print(f"Cost: {cost / total}")
+mse = mean_squared_error(housing_labels, predictions)
+rmse = np.sqrt(mse)
+print(f"Cost: {rmse}")
 

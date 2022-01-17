@@ -36,6 +36,7 @@ print(housing_prepared.shape)
 # selecting and training a model
 from sklearn.linear_model import LinearRegression
 from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
 
 # model 0
@@ -46,19 +47,40 @@ lin_reg.fit(housing_prepared, housing_labels)
 tree_reg = DecisionTreeRegressor()
 tree_reg.fit(housing_prepared, housing_labels)
 
+# model 2
+forest_reg = RandomForestRegressor()
+forest_reg.fit(housing_prepared, housing_labels)
+
 # predictions by the two models
 # predictions = lin_reg.predict(housing_prepared)
-predictions = tree_reg.predict(housing_prepared)
+# predictions = tree_reg.predict(housing_prepared)
+predictions = forest_reg.predict(housing_prepared)    # best
 
 # some_data = housing.iloc[:5]
 # some_labels = housing_labels[:5]
 # some_data_prepared = full_pipeline.transform(some_data)
-# print(f"Predictions:\t\t {lin_reg.predict(some_data_prepared)}")
+# print(f"Predictions:\t\t {forest_reg.predict(some_data_prepared)}")
 # print(f"Original Labels:\t\t {list(some_labels)}")
 
-# computing how well the model performed.
 
-mse = mean_squared_error(housing_labels, predictions)
-rmse = np.sqrt(mse)
-print(f"Cost: {rmse}")
+# from sklearn.model_selection import cross_val_score
+# scores = cross_val_score(forest_reg, housing_prepared, housing_labels, scoring="neg_mean_squared_error", cv=10)
+# rmse_scores = np.sqrt(-scores)
+#
+# def display_scores(scores):
+#     print("Scores: ", scores)
+#     print("Mean: ", scores.mean())
+#     print("Standard Deviation: ", scores.std())
+#
+# display_scores(rmse_scores)
+
+# evaluate system on test set
+X_test = strat_test_set.drop("median_house_value", axis=1)
+y_test = strat_test_set["median_house_value"].copy()
+X_test_prepared = full_pipeline.transform(X_test)
+
+final_predictions = forest_reg.predict(X_test_prepared)
+final_mse = mean_squared_error(y_test, final_predictions)
+final_rmse = np.sqrt(final_mse)
+print(final_rmse)
 

@@ -3,7 +3,7 @@ This data has metrics such as the population, median income, median housing pric
 We will just call them “districts” for short. The model is able to learn from this data and be able to predict the median housing price in any district, given all the other metrics.
 
 ### Project Structure
-The **housing.ipynb** notebook contains the analysis, data insights and notes for this machine learning project.
+The **housing.ipynb** notebook contains the Exploratory Data Analysis (EDA), data insights and notes for this machine learning project.
 
 The **python files** just contain the code.
 
